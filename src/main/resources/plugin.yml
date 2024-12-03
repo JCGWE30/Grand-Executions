@@ -1,0 +1,7 @@
+name: GrandExecutions
+version: '1.0'
+main: org.lepigslayer.grandExecutions.GrandExecutions
+api-version: '1.21'
+commands:
+  toggledeath:
+    usage: toggleDeath
