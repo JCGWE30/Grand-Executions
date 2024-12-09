@@ -30,15 +30,10 @@ public class EulogyManager {
     private ItemStack getEulogy(EntityDamageEvent.DamageCause cause, String killer){
         OfflinePlayer op = Bukkit.getOfflinePlayer(owner);
 
-        String message = String.format(DeathMessages.deathMessages.get(cause.toString())[new Random().nextInt(3)],op.getName());
-
-        if(DeathMessages.attackerMessages.contains(cause)) {
-            message = message.replace("KILLER",killer);
-        }
+        String message = DeathMessages.getRandomMessage(cause,op.getName(),killer);
 
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK,1);
         BookMeta meta = ((BookMeta) book.getItemMeta());
-
 
         meta.setAuthor("§4Death");
         meta.setTitle("§aThe life of "+op.getName());

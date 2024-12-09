@@ -45,7 +45,7 @@ public class DeathManager {
         return !dead.contains(id);
     }
 
-    public static boolean shouldSee(WrappedGameProfile profile, Player p){
+    public static boolean  shouldSee(WrappedGameProfile profile, Player p){
         if(DeadBody.isCorpse(profile))
             return false;
         if(!isAlive(p.getUniqueId()))

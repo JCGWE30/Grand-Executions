@@ -57,24 +57,30 @@ public class DeadBody {
         setInventory();
         setHead(owner.getPlayer());
         ensureTeam();
-        setBlocks();
+        setBlocks(true);
         spawnBody();
         GrandExecutions.getSaver().saveCorpse(this,owner.getUniqueId().toString());
     }
 
     private DeadBody(){};
 
-    private void setBlocks() {
+    private void setBlocks(boolean hard) {
         digBlocks[0] = origin.getBlock().getRelative(BlockFace.DOWN);
         digBlocks[1] = digBlocks[0].getRelative(BlockFace.WEST);
         digBlocks[2] = origin.getBlock().getRelative(BlockFace.WEST);
 
+        if(!hard) return;
+
         ItemStack pickaxe = new ItemStack(Material.DIAMOND_PICKAXE);
 
+        List<ItemStack> drops = new ArrayList<>(Arrays.stream(inventoryContents).toList());
+
         for (Block b : digBlocks) {
-            b.breakNaturally(pickaxe);
+            drops.addAll(b.getDrops(pickaxe));
             b.setType(Material.COARSE_DIRT);
         }
+
+        inventoryContents = drops.toArray(new ItemStack[drops.size()]);
 
         digBlocks[2].setType(Material.AIR);
     }
@@ -340,7 +346,7 @@ public class DeadBody {
             body.fakeProfile = profile;
 
             body.ensureTeam();
-            body.setBlocks();
+            body.setBlocks(false);
             body.setHead();
 
             return body;

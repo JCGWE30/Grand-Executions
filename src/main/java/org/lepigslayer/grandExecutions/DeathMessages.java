@@ -1,17 +1,17 @@
 package org.lepigslayer.grandExecutions;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DeathMessages {
-    public static final List<EntityDamageEvent.DamageCause> attackerMessages = Arrays.asList(
-            EntityDamageEvent.DamageCause.ENTITY_ATTACK,
-            EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK,
-            EntityDamageEvent.DamageCause.PROJECTILE
+    public static final List<String> attackerMessages = Arrays.asList(
+            EntityDamageEvent.DamageCause.ENTITY_ATTACK.toString(),
+            EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK.toString(),
+            EntityDamageEvent.DamageCause.PROJECTILE.toString(),
+            "FALL_NO_ATTACKER",
+            "FALL_WITH_ATTACKER"
     );
     public static final String[] summaryMessages = {
             "%s lived a life full of courage and determination, conquering every challenge they faced.",
@@ -68,10 +68,16 @@ public class DeathMessages {
                 "%s's breath was taken away, and with it, their journey came to an end."
         });
 
-        put("FALL", new String[]{
+        put("FALL_NO_ATTACKER", new String[]{
                 "%s fell to their doom, unable to recover from the height they plummeted from.",
                 "%s’s fall ended their life, no chance to survive the deadly descent.",
                 "%s's journey ended with a fatal fall, their body unable to withstand the impact."
+        });
+
+        put("FALL_WITH_ATTACKER", new String[]{
+                "%s was pushed to their doom by %k, unable to recover from the deadly height.",
+                "%s fell to their demise after a fateful encounter with %k.",
+                "%s's fall was aided by %k, sealing their tragic fate."
         });
 
         put("FIRE", new String[]{
@@ -220,8 +226,22 @@ public class DeathMessages {
 
         put("SONIC_BOOM", new String[]{
                 "%s was struck by a sonic boom, their body torn apart by the shockwave.",
-                "%s’s body was crumbled under the immense pressure of a sonic boom"
+                "%s’s body was crumbled under the immense pressure of a sonic boom",
+                "%s was ended by the immense power of a sonic boom, that tore through the air"
         });
     }};
+
+    public static String getRandomMessage(EntityDamageEvent.DamageCause cause, String victim, String killer){
+        String sCause = cause.toString();
+        if(cause== EntityDamageEvent.DamageCause.FALL){
+            sCause = killer.isEmpty() ? "FALL_NO_ATTACKER" : "FALL_WITH_ATTACKER";
+        }
+
+        String message = String.format(deathMessages.get(sCause)[new Random().nextInt(3)],victim);
+
+        if(attackerMessages.contains(sCause))
+            message = message.replace("KILLER",killer);
+        return message;
+    }
 
 }

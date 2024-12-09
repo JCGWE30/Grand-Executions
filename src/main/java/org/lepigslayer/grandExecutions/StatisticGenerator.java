@@ -19,7 +19,7 @@ public class StatisticGenerator {
         put("PLAYER_KILLS", "Player Kills");
         put("FISH_CAUGHT", "Fish Caught");
         put("ANIMALS_BRED", "Animals Bred");
-        put("LEAVE_GAME", "Leave Game");
+        put("LEAVE_GAME", "Games Left");
         put("JUMP", "Jumps");
         put("DROP_COUNT", "Items Dropped");
         put("DROP", "OBJECT Dropped");

@@ -5,6 +5,8 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.*;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.PlayerInfoData;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -22,7 +24,6 @@ public final class GrandExecutions extends JavaPlugin {
         DeathManager.init();
         DeadBody.loadCorpses();
         getServer().getPluginManager().registerEvents(new ExecutionEvents(this), this);
-        getCommand("corpse").setExecutor(new CorpseTestCommand());
         StatisticGenerator.generateStatistics();
     }
 
@@ -31,25 +32,19 @@ public final class GrandExecutions extends JavaPlugin {
     }
 
     private static void setupIntercepters() {
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.HIGHEST, PacketType.Play.Server.PLAYER_INFO) {
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(instance, ListenerPriority.MONITOR, PacketType.Play.Server.PLAYER_INFO) {
             @Override
             public void onPacketSending(PacketEvent e) {
-                List<PlayerInfoData> data = e.getPacket().getPlayerInfoDataLists().read(1)
-                        .stream()
-                        .map(d-> new PlayerInfoData(
-                                d.getProfileId(),
-                                d.getLatency(),
-                                DeathManager.shouldSee(d.getProfile(),e.getPlayer()),
-                                d.getGameMode(),
-                                d.getProfile(),
-                                d.getDisplayName(),
-                                d.getRemoteChatSessionData()
-                        ))
-                        .toList();
-                e.getPacket().getPlayerInfoDataLists().write(1, data);
-                Set<EnumWrappers.PlayerInfoAction> actions = e.getPacket().getPlayerInfoActions().read(0);
-                actions.add(EnumWrappers.PlayerInfoAction.UPDATE_LISTED);
-                e.getPacket().getPlayerInfoActions().write(0, actions);
+                return; // Fix this shit later
+//                List<PlayerInfoData> uids = e.getPacket().getPlayerInfoDataLists().read(1).stream()
+//                        .filter(d->!DeathManager.shouldSee(d.getProfile(),e.getPlayer())).toList();
+//
+//                if(uids.isEmpty()) return;
+//
+//                PacketContainer removePacket = new PacketContainer(PacketType.Play.Server.PLAYER_INFO_REMOVE);
+//                removePacket.getPlayerInfoDataLists().write(0, uids);
+//
+//                ProtocolLibrary.getProtocolManager().sendServerPacket(e.getPlayer(), removePacket);
             }
         });
 

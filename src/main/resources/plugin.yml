@@ -3,6 +3,3 @@ version: '1.0'
 main: org.lepigslayer.grandExecutions.GrandExecutions
 api-version: '1.21'
 depend: [voicechat]
-commands:
-  corpse:
-    usage: /corpse
