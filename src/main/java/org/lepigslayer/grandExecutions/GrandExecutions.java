@@ -3,11 +3,12 @@ package org.lepigslayer.grandExecutions;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.*;
-import com.comphenix.protocol.wrappers.EnumWrappers;
-import com.comphenix.protocol.wrappers.PlayerInfoData;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.lepigslayer.grandExecutions.Death.DeadBody;
+import org.lepigslayer.grandExecutions.Death.DeathManager;
+import org.lepigslayer.grandExecutions.Discord.DiscordGateway;
+import org.lepigslayer.grandExecutions.Statistics.StatisticGenerator;
+import org.lepigslayer.grandExecutions.Utils.FileSaver;
 
 import java.util.*;
 
@@ -25,6 +26,12 @@ public final class GrandExecutions extends JavaPlugin {
         DeadBody.loadCorpses();
         getServer().getPluginManager().registerEvents(new ExecutionEvents(this), this);
         StatisticGenerator.generateStatistics();
+        DiscordGateway.start(this);
+    }
+
+    @Override
+    public void onDisable() {
+        DiscordGateway.saveSettings();
     }
 
     public static FileSaver getSaver() {

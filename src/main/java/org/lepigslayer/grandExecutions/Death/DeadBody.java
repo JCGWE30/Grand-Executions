@@ -1,4 +1,4 @@
-package org.lepigslayer.grandExecutions;
+package org.lepigslayer.grandExecutions.Death;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -10,18 +10,19 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wither;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
-import org.bukkit.profile.PlayerTextures;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.lepigslayer.grandExecutions.EulogyManager;
+import org.lepigslayer.grandExecutions.GrandExecutions;
+import org.lepigslayer.grandExecutions.Utils.HeadUtils;
+import org.lepigslayer.grandExecutions.Utils.SerializableVector;
 
 import java.io.*;
 import java.util.*;
@@ -202,7 +203,7 @@ public class DeadBody {
             origin.getWorld().dropItemNaturally(origin, item);
         }
         origin.getWorld().dropItemNaturally(origin,head);
-        origin.getWorld().dropItemNaturally(origin,EulogyManager.getEulogy(cause,owner,killer));
+        origin.getWorld().dropItemNaturally(origin, EulogyManager.getEulogy(cause,owner,killer));
         origin.getWorld().spawnParticle(Particle.POOF, origin, 0);
         origin.getWorld().playSound(origin, Sound.ENTITY_HORSE_SADDLE, 1, 1);
         GrandExecutions.getSaver().deleteCorpse(owner.getUniqueId().toString());
@@ -228,6 +229,7 @@ public class DeadBody {
     public static void syncCorpses(Player p) {
         for (DeadBody body : existingBodies) {
             body.deLoad(p);
+            if(!body.origin.getWorld().equals(p.getWorld())) return;
             body.syncBody(p);
         }
     }

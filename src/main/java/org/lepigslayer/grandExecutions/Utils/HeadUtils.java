@@ -1,4 +1,4 @@
-package org.lepigslayer.grandExecutions;
+package org.lepigslayer.grandExecutions.Utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

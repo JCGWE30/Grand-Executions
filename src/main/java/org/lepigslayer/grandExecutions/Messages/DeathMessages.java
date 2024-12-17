@@ -1,6 +1,5 @@
-package org.lepigslayer.grandExecutions;
+package org.lepigslayer.grandExecutions.Messages;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.*;

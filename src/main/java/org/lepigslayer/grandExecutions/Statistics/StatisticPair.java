@@ -1,16 +1,9 @@
-package org.lepigslayer.grandExecutions;
+package org.lepigslayer.grandExecutions.Statistics;
 
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.entity.EntityType;
-
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class StatisticPair {
     private Statistic statistic;

@@ -1,4 +1,4 @@
-package org.lepigslayer.grandExecutions;
+package org.lepigslayer.grandExecutions.Utils;
 
 import org.bukkit.util.Vector;
 

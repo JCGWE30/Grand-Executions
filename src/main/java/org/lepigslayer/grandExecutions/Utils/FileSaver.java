@@ -1,8 +1,10 @@
-package org.lepigslayer.grandExecutions;
+package org.lepigslayer.grandExecutions.Utils;
+
+import org.lepigslayer.grandExecutions.Death.DeadBody;
+import org.lepigslayer.grandExecutions.GrandExecutions;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -71,6 +73,29 @@ public class FileSaver {
         try (FileWriter writer = new FileWriter(list)) {
             writer.write(builder.toString().trim());
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String getDiscordSettings(){
+        File token = new File(baseFolder,"discord.json");
+        if(!token.exists()) throw new RuntimeException("Token file does not exist");
+        StringBuilder sb = new StringBuilder();
+        try(Scanner scanner = new Scanner(token)){
+            while(scanner.hasNext())
+                sb.append(scanner.nextLine())
+                        .append("\n");
+            return sb.toString().trim();
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveDiscordSettings(String json){
+        File token = new File(baseFolder,"discord.json");
+        try(FileWriter writer = new FileWriter(token)){
+            writer.write(json);
+        }catch(IOException e){
             throw new RuntimeException(e);
         }
     }

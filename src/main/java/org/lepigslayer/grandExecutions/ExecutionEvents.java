@@ -14,12 +14,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
+import org.lepigslayer.grandExecutions.Death.DeadBody;
+import org.lepigslayer.grandExecutions.Death.DeathManager;
+import org.lepigslayer.grandExecutions.Discord.DiscordGateway;
 
 import java.util.List;
 import java.util.Random;
@@ -90,17 +94,24 @@ public class ExecutionEvents implements Listener {
         String killer = "";
         if(e.getDamageSource().getCausingEntity()!=null) killer = e.getDamageSource().getCausingEntity().getName();
         DeathManager.kill(player,deathSpot,e.getCause(),killer);
+        DiscordGateway.kill(player.getUniqueId());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void joinSetup(PlayerJoinEvent e) {
         DeadBody.syncCorpses(e.getPlayer());
+        DiscordGateway.reloadBoard();
         setPermission(e.getPlayer(), "voicechat.groups", false);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void digCorpse(BlockBreakEvent e) {
         e.setCancelled(DeadBody.checkHits(e.getBlock().getLocation()));
+    }
+
+    @EventHandler
+    public void dimensionChange(PlayerChangedWorldEvent e){
+        DeadBody.syncCorpses(e.getPlayer());
     }
 
     private boolean totemCheck(EntityDamageEvent.DamageCause cause, Player player) {

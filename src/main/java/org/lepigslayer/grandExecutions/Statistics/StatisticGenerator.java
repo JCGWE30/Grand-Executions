@@ -1,4 +1,4 @@
-package org.lepigslayer.grandExecutions;
+package org.lepigslayer.grandExecutions.Statistics;
 
 import org.bukkit.Material;
 import org.bukkit.Statistic;
